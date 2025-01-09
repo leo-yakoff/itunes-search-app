@@ -1,0 +1,46 @@
+h1,
+search {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+search {
+  input[type="search"] {
+    margin-right: 1rem;
+    width: 30vw;
+  }
+
+  input:focus {
+    outline: 0;
+  }
+
+  button:enabled {
+    cursor: pointer;
+  }
+}
+
+.result-header {
+  text-align: center;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+thead tr {
+  background-color: #bee5eb;
+}
+
+tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.075);
+}
+
+tbody td {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
+
+a {
+  color: #007bff;
+}
