@@ -1,11 +1,12 @@
 import React from "react";
 
 import "../styles/App.scss";
-import { ITunesSearchApiResponse } from "./types";
+import { ITunesSearchApiResponse, Track } from "./types";
 import { callApi, formatDate, formatDuration, getHostName } from "./utils";
 
 const App: React.FC = () => {
   const [searchTerm, setSearchTerm] = React.useState("");
+  const [isLoading, setIsLoading] = React.useState(false);
   const [searchResult, setSearchResult] =
     React.useState<ITunesSearchApiResponse>();
   const [searchError, setSearchError] = React.useState("");
@@ -13,7 +14,11 @@ const App: React.FC = () => {
   const runSearch = () => {
     const params = new URLSearchParams({ term: searchTerm });
 
+    setIsLoading(true);
+
     callApi(params).then((response) => {
+      setIsLoading(false);
+
       if (response.error) {
         setSearchError(response.error);
         setSearchResult(undefined);
@@ -39,6 +44,10 @@ const App: React.FC = () => {
   };
 
   const getSearchResult = () => {
+    if (isLoading) {
+      return <h2 className="result-header">Loading...</h2>;
+    }
+
     if (searchError) {
       return <p className="result-header">Search error: {searchError}</p>;
     }
@@ -66,13 +75,15 @@ const App: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {searchResult.results.map((item: any, index: number) => (
-              <tr key={index.toString()}>
+            {searchResult.results.map((item: Track, index: number) => (
+              <tr key={(item.trackId ?? index).toString()}>
                 <td>{item.wrapperType}</td>
                 <td>{item.trackName}</td>
                 <td>{item.artistName}</td>
                 <td>{formatDuration(item.trackTimeMillis)}</td>
-                <td>{`${item.trackPrice} ${item.currency}`}</td>
+                <td>
+                  {item.trackPrice ? `${item.trackPrice} ${item.currency}` : ""}
+                </td>
                 <td>{formatDate(item.releaseDate)}</td>
                 <td>{item.primaryGenreName}</td>
                 <td>{item.country}</td>
@@ -99,10 +110,10 @@ const App: React.FC = () => {
   };
 
   const renderResult = React.useMemo(() => {
-    if (searchResult || searchError) {
+    if (isLoading || searchResult || searchError) {
       return <div className="search-results">{getSearchResult()}</div>;
     }
-  }, [searchResult, searchError]);
+  }, [isLoading, searchResult, searchError]);
 
   return (
     <>
