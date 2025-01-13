@@ -29,14 +29,6 @@ const App: React.FC = () => {
     });
   };
 
-  const handleChangeSearchTerm = (value: string) => {
-    if (!value.length) {
-      setSearchError("");
-      setSearchResult(undefined);
-    }
-    setSearchTerm(value);
-  };
-
   const handleKeyPress = (value: string) => {
     if (value === "Enter" && searchTerm?.length) {
       runSearch();
@@ -123,7 +115,7 @@ const App: React.FC = () => {
           type="search"
           value={searchTerm}
           placeholder="Type text to search"
-          onChange={(e) => handleChangeSearchTerm(e.target.value)}
+          onChange={(e) => setSearchTerm(e.target.value)}
           onKeyDown={(e) => handleKeyPress(e.key)}
         />
         <button

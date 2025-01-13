@@ -1,6 +1,6 @@
 {
   "name": "itunes-search-app",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Application with common features of searching media content, allowing users to search for music, books, and other media using the iTunes Search API",
   "main": "index.js",
   "scripts": {
